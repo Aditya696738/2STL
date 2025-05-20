@@ -1,12 +1,9 @@
 // employee managment system
 #include <iostream>
 #include <vector>
-#include <map>
-#include <deque>
-#include <list>
-#include <set>
 #include <string>
-#include <ctime>
+#include <iterator>
+#include <algorithm>
 #include <numeric>
 struct Employee{
     int Employee_ID;
@@ -31,15 +28,25 @@ int main(){
     std::vector<Employee>high_Earners;
     copy_if(Employees.begin() , Employees.end() , back_inserter(high_Earners),[](const Employee &e){
         return e.Salary > 20000;
-        std::cout<<std::endl;
     });
     std::cout <<"High Earners Employees \n";
-    for_each(Employees.begin(),Employees.end() , Employee_Details);
+    //this clarify the result and display the filtered list..
+    for_each(high_Earners.begin(),high_Earners.end() , Employee_Details);
+    
     double total_Salary = std::accumulate(Employees.begin() , Employees.end() , 0.0 ,[](double sum , const Employee &e){
         return sum + e.Salary;
     });
     double Avg_Salary = total_Salary / Employees.size();
     std::cout <<"Average salary of Employees :- " << Avg_Salary<<std::endl;
    // for_each(Employees.begin(),Employees.end() , Employee_Details);
+   auto Highest_paid = max_element(Employees.begin(), Employees.end(),[](const Employee& e1 , Employee& e2){
+    return e1.Salary < e2.Salary;
+   });
+   //std::cout <<"Highest paid Employees \n";
+    //for_each(Employees.begin(),Employees.end() , Employee_Details);
+    if (Highest_paid != Employees.end()) {
+    std::cout << "Highest paid Employee: \n";
+    Employee_Details(*Highest_paid);
+}
     return 0;
 }
